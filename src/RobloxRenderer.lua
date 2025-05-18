@@ -4,6 +4,9 @@
 	renderer that does anything.
 ]]
 
+--# - 2025-05-18: Added instanceDefault application to new instances. (by Destruction-Studios)
+
+
 local Binding = require(script.Parent.Binding)
 local Children = require(script.Parent.PropMarkers.Children)
 local ElementKind = require(script.Parent.ElementKind)
@@ -12,6 +15,7 @@ local getDefaultInstanceProperty = require(script.Parent.getDefaultInstancePrope
 local Ref = require(script.Parent.PropMarkers.Ref)
 local Type = require(script.Parent.Type)
 local internalAssert = require(script.Parent.internalAssert)
+local instanceDefaults = require(script.Parent.instanceDefaults)
 
 local config = require(script.Parent.GlobalConfig).get()
 
@@ -189,6 +193,14 @@ function RobloxRenderer.mountHostNode(reconciler, virtualNode)
 	end
 
 	local instance = Instance.new(element.component)
+
+	local classDefaults = instanceDefaults[element.component]
+	if classDefaults ~= nil then
+		for defaultProp, defaultValue in pairs(classDefaults) do
+			(instance :: any)[defaultProp] = defaultValue
+		end
+	end
+
 	virtualNode.hostObject = instance
 
 	local success, errorMessage = xpcall(function()
