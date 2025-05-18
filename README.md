@@ -1,4 +1,4 @@
-##MODIFIED BY Destruction-Studios
+## Modified by Destruction-Studios
 >Added defaults to classes (taken from dphfox/Fusion) 5/18/2025
 
 
